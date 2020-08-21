@@ -1,38 +1,38 @@
+#include <vector>
 #include <iostream>
-#include <ceres/ceres.h>
-
-
+#include <set>
+#include <queue>
+#include <map>
+#include <unordered_map>
+#include <unordered_map>
+#include <sstream>
+#include <set>
+#include <functional>
+#include <algorithm>
 using namespace std;
 
-// 首先定义一个损失函数
-struct CostFunctor{
-    template<typename T>
-    bool operator()(const T *const x , T * residual) const {
-        residual[0] = T(10.0) - x[0];
-        return true;
-    }
-};
+
+
+
 
 int main()
 {
-    cout << "Hello World!" << endl;
-    // 定义一个初始值
-    double init_val = 5.0;
-    double x = init_val;
 
-    // build the problem
-    ceres::Problem problem;
-    ceres::CostFunction *cost_function = new ceres::AutoDiffCostFunction<CostFunctor , 1 , 1>(new CostFunctor);
-    problem.AddResidualBlock(cost_function , NULL , &x);
+    set<int> m_set1 , m_set2 , un_match;
+    m_set1.insert(1);
+    m_set1.insert(2);
+    m_set1.insert(3);
 
-    ceres::Solver::Options options;
-    options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-    ceres::Solver::Summary summary;
-    ceres::Solve(options , &problem , &summary);
+    m_set2.insert(1);
+    m_set2.insert(3);
 
-    std::cout << summary.BriefReport() << "\n";
-    std::cout << "x : " << init_val
-              << " -> " << x << "\n";
-    return 0;
+    set_difference(m_set1.begin() , m_set1.end() , m_set2.begin() , m_set2.end() , insert_iterator<set<int>>(un_match , un_match.begin()));
+
+    for(auto v:un_match)
+    {
+        std::cout << v << std::endl;
+    }
+
+
+    return 1;
 }
